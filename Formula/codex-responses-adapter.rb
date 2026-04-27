@@ -1,22 +1,22 @@
 class CodexResponsesAdapter < Formula
   desc "Translate OpenAI Responses API to Chat Completions API"
   homepage "https://github.com/szj2ys/codex-responses-adapter"
-  version "0.0.0"
+  version "0.1.0"
   license "MIT"
 
-  head "https://github.com/szj2ys/codex-responses-adapter.git", branch: "main"
+  head "https://github.com/szj2ys/codex-responses-adapter.git", branch: "dev"
+
+  url "https://github.com/szj2ys/codex-responses-adapter/archive/refs/heads/dev.tar.gz"
+  sha256 :no_check
+
+  depends_on "rust" => :build
 
   def install
-    odie <<~MSG
-      This formula is a placeholder. The first release is not yet published.
+    system "cargo", "build", "--release"
+    bin.install "target/release/codex-responses-adapter"
+  end
 
-      Two options:
-        1. Wait for the first GitHub Release (triggered by pushing a v* tag), then run:
-           brew update && brew upgrade codex-responses-adapter
-
-        2. Build from source now:
-           git clone https://github.com/szj2ys/codex-responses-adapter.git
-           cd codex-responses-adapter && cargo build --release
-    MSG
+  test do
+    system "#{bin}/codex-responses-adapter", "--help"
   end
 end
